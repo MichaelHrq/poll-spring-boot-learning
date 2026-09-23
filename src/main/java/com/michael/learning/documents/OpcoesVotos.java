@@ -19,6 +19,6 @@ public class OpcoesVotos {
 
     private String titulo;
 
-    private String enquete;
+    private String enqueteId;
 
 }

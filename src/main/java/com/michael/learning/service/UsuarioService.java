@@ -16,9 +16,17 @@ public class UsuarioService {
     public void cadastrar(UsuarioRequestDto dto) throws BadRequestException {
         Usuarios usuario = usuarioRepository.findByUsername(dto.username()).orElse(null);
         if (usuario != null) {
-            throw new BadRequestException("Username já cadastrado");
+            throw new BadRequestException("Username já cadastrado!");
         }
         usuarioRepository.save(Usuarios.builder().username(dto.username()).build());
+    }
+
+    public void remover(String usuarioId) {
+        Usuarios usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        if (usuario == null) {
+            throw new BadRequestException("Usuario não cadastrado!");
+        }
+        usuarioRepository.delete(usuario);
     }
 
 }

@@ -24,8 +24,9 @@ public class Enquetes {
     private String descricao;
     private StatusEnquete status;
 
+    private LocalDateTime dtCriacao;
     private LocalDateTime dtEncerramento;
 
-    private String usuario;
+    private String usuarioId;
 
 }

@@ -19,9 +19,9 @@ public class Votos {
     @Id
     private String id;
 
-    private String usuario;
-    private String enquete;
-    private String opcaoVoto;
+    private String usuarioId;
+    private String enqueteId;
+    private String opcaoVotoId;
 
     private LocalDateTime dtCriacao;
 
