@@ -2,4 +2,4 @@ spring:
   application:
     name: learning
   mongodb:
-    uri: mongodb://localhost:27017/enquete
+    uri: ${MONGO_URI}

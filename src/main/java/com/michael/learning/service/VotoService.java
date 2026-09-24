@@ -11,6 +11,7 @@ import com.michael.learning.repositories.VotosRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -22,7 +23,7 @@ public class VotoService {
     private final EnqueteRepository enqueteRepository;
     private final OpcaoVotoRepository opcaoVotoRepository;
 
-    public void votar(VotoRequestDto dto) throws NotFoundException {
+    public void vote(VotoRequestDto dto) {
         if (!usuarioRepository.existsById(dto.usuarioId())) {
             throw new NotFoundException("Usuário não encontrado");
         }
@@ -32,23 +33,23 @@ public class VotoService {
         if (!opcaoVotoRepository.existsById(dto.opcaoVotoId())) {
             throw new NotFoundException("Opção de voto não encontrado");
         }
-
         Votos voto = votosRepository
                 .findByUsuarioIdAndEnqueteId(dto.usuarioId(), dto.enqueteId())
                 .orElse(null);
-
         if (voto != null) {
             throw new BadRequestException("Usuário já votou nessa enquete");
         }
-
-        votosRepository.save(Votos
-                .builder()
+        votosRepository.save(Votos.builder()
                 .usuarioId(dto.usuarioId())
                 .enqueteId(dto.enqueteId())
                 .opcaoVotoId(dto.opcaoVotoId())
                 .dtCriacao(LocalDateTime.now())
                 .build()
         );
+    }
+
+    public List<Votos> findAll (){
+        return votosRepository.findAll();
     }
 
 }

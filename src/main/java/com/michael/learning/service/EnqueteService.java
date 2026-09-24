@@ -5,6 +5,7 @@ import com.michael.learning.documents.OpcoesVotos;
 import com.michael.learning.documents.Usuarios;
 import com.michael.learning.dto.request.EnqueteRequestDto;
 import com.michael.learning.dto.response.EnqueteResultadoDto;
+import com.michael.learning.dto.response.EnquetesDto;
 import com.michael.learning.dto.response.OpcaoVotoResultadoDto;
 import com.michael.learning.enums.StatusEnquete;
 import com.michael.learning.exception.BadRequestException;
@@ -48,7 +49,7 @@ public class EnqueteService {
         );
     }
 
-    public void alterarStatus (String enqueteId, StatusEnquete status) {
+    public void alterarStatus(String enqueteId, StatusEnquete status) {
         Enquetes enquete = enqueteRepository.findById(enqueteId).orElse(null);
         if (enquete == null) {
             throw new NotFoundException("Enquete não encontrada");
@@ -74,10 +75,9 @@ public class EnqueteService {
             Long votosOpcao = votosRepository.countByOpcaoVotoId(opcao.getId());
 
             Double porcentagem = totalGeral > 0
-                    ?  ((double) votosOpcao/totalGeral) * 100
+                    ? ((double) votosOpcao / totalGeral) * 100
                     : 0.0;
             return new OpcaoVotoResultadoDto(
-                    opcao.getId(),
                     opcao.getTitulo(),
                     votosOpcao,
                     porcentagem
@@ -91,4 +91,23 @@ public class EnqueteService {
         );
     }
 
+    public List<EnquetesDto> findAll() {
+        List<Enquetes> enquetes = enqueteRepository.findAll();
+        return enquetes.stream().map(enq -> {
+            String nomeUsuario = usuarioRepository.findById(enq.getUsuarioId())
+                    .map(Usuarios::getUsername)
+                    .orElse("");
+            List<String> titulosOpcoes = opcaoVotoRepository.findAllByEnqueteId(enq.getId())
+                    .stream()
+                    .map(OpcoesVotos::getTitulo)
+                    .toList();
+            return new EnquetesDto(
+                    enq.getTitulo(),
+                    enq.getDescricao(),
+                    nomeUsuario,
+                    titulosOpcoes
+            );
+
+        }).toList();
+    }
 }
