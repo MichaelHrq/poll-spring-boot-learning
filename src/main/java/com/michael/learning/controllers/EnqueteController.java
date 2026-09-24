@@ -1,13 +1,10 @@
 package com.michael.learning.controllers;
 
-import com.michael.learning.documents.Enquetes;
 import com.michael.learning.dto.request.EnqueteRequestDto;
-import com.michael.learning.dto.request.UsuarioRequestDto;
 import com.michael.learning.dto.response.EnqueteResultadoDto;
 import com.michael.learning.dto.response.EnquetesDto;
 import com.michael.learning.enums.StatusEnquete;
 import com.michael.learning.service.EnqueteService;
-import com.michael.learning.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
