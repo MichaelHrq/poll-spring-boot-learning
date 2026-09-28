@@ -12,4 +12,6 @@ public interface VotosRepository extends MongoRepository<Votos, String> {
     Long countByOpcaoVotoId(String opcaoVotoId);
 
     Optional<Votos> findByUsuarioIdAndEnqueteId(String usuarioId, String enqueteId);
+
+    List<Votos> findAllByEnqueteId(String enqueteId);
 }

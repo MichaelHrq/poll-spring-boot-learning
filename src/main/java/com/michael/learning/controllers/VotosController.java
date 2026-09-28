@@ -2,6 +2,7 @@ package com.michael.learning.controllers;
 
 import com.michael.learning.documents.Votos;
 import com.michael.learning.dto.request.VotoRequestDto;
+import com.michael.learning.dto.response.VotosEnqueteDto;
 import com.michael.learning.service.VotoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class VotosController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Votos> findAll () {
-        return votoService.findAll();
+    public VotosEnqueteDto findAllByEnquete (String enqueteID) {
+        return votoService.findAllByEnquete(enqueteID);
     }
 
 }
