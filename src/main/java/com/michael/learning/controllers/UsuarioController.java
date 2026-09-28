@@ -32,19 +32,25 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update (@PathVariable String id, @RequestBody UsuarioRequestDto dto) {
-        usuarioService.update(id,dto);
+    public void updateUsername(@PathVariable String id, @RequestBody UsuarioRequestDto dto) {
+        usuarioService.updateUsername(id, dto);
+    }
+
+    @PutMapping("/password")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePassword(@RequestBody UsuarioRequestDto dto) {
+        usuarioService.updatePassword(dto);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Usuarios> findAll () {
+    public List<Usuarios> findAll() {
         return usuarioService.findAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Usuarios findById (@PathVariable String id) {
+    public Usuarios findById(@PathVariable String id) {
         return usuarioService.findById(id);
     }
 

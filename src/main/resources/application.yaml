@@ -3,3 +3,9 @@ spring:
     name: learning
   mongodb:
     uri: ${MONGO_URI}
+
+logging:
+  level:
+    root: INFO
+    com.michael.learning: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
