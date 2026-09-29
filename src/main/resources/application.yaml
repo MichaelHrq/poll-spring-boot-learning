@@ -4,6 +4,10 @@ spring:
   mongodb:
     uri: ${MONGO_URI}
 
+jwt:
+  expiration: {JWT_EXPIRATION}
+  key: {JWT_KEY}
+
 logging:
   level:
     root: INFO
