@@ -3,6 +3,7 @@ package com.michael.learning.service;
 import com.michael.learning.documents.Enquetes;
 import com.michael.learning.documents.OpcoesVotos;
 import com.michael.learning.documents.Usuarios;
+import com.michael.learning.documents.Votos;
 import com.michael.learning.dto.request.EnqueteRequestDto;
 import com.michael.learning.dto.response.EnqueteResultadoDto;
 import com.michael.learning.dto.response.EnquetesDto;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -68,25 +71,30 @@ public class EnqueteService {
         log.info("Status da enquete do ID {} atualizado com sucesso para {}", enqueteId, status);
     }
 
-    public EnqueteResultadoDto resultado(String enqueteId) {
+    public EnqueteResultadoDto resultado (String enqueteId) {
         log.info("Iniciando tentativa de resultado da enquete do ID {}", enqueteId);
+
+        log.debug("Resgatando enquete do ID {}", enqueteId);
         Enquetes enquete = enqueteRepository.findById(enqueteId).orElse(null);
         if (enquete == null) {
             log.warn("Falha no resultado: Enquete do ID {} não encontrada", enqueteId);
             throw new NotFoundException("Enquete não encontrada");
         }
 
-        log.info("Resgatando opções de votos da enquete do ID {}", enqueteId);
-        List<OpcoesVotos> opcoes = opcaoVotoRepository.getAllByEnqueteId(enqueteId);
-        log.info("Opções de votos resgatados com sucesso! Quantidade de opções: {}", opcoes.size());
+        log.debug("Resgatando opções de votos da enquete do ID {}", enqueteId);
+        List<OpcoesVotos> opcoes = opcaoVotoRepository.findAllByEnqueteId(enqueteId);
+        log.debug("Opções de votos resgatados com sucesso! Quantidade de opções: {}", opcoes.size());
 
-        log.info("Resgatando quantidade de votos da enquete do ID {}", enqueteId);
-        Long totalGeral = votosRepository.countByEnqueteId(enqueteId);
-        log.info("{} votos resgatados com sucesso!", totalGeral);
+        log.debug("Resgatando todos os votos da enquete do ID {}", enqueteId);
+        List<Votos> todosVotosEnquete = votosRepository.findAllByEnqueteId(enqueteId);
+        long totalGeral =  todosVotosEnquete.size();
+        log.debug("{} votos resgatados com sucesso!", totalGeral);
 
+        Map<String, Long> contagemOpcao = todosVotosEnquete.stream()
+                .collect(Collectors.groupingBy(Votos::getOpcaoVotoId, Collectors.counting()));
 
         List<OpcaoVotoResultadoDto> detalheOpcoes = opcoes.stream().map(opcao -> {
-            Long votosOpcao = votosRepository.countByOpcaoVotoId(opcao.getId());
+            Long votosOpcao = contagemOpcao.getOrDefault(opcao.getId(), 0L);
             Double porcentagem = totalGeral > 0
                     ? ((double) votosOpcao / totalGeral) * 100
                     : 0.0;
@@ -120,6 +128,7 @@ public class EnqueteService {
                     .map(OpcoesVotos::getTitulo)
                     .toList();
             return new EnquetesDto(
+                    enq.getId(),
                     enq.getTitulo(),
                     enq.getDescricao(),
                     nomeUsuario,

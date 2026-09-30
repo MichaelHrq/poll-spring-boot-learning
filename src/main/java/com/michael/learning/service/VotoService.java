@@ -38,19 +38,19 @@ public class VotoService {
     public void vote(VotoRequestDto dto) {
         log.info("Iniciando tentativa de cadastrar um voto");
 
-        log.info("Resgatando usuário (ID: {})", dto.usuarioId());
+        log.debug("Resgatando usuário (ID: {})", dto.usuarioId());
         if (!usuarioRepository.existsById(dto.usuarioId())) {
             log.warn("Falha na votação: usuário não encontrado (ID: {})", dto.usuarioId());
             throw new NotFoundException("Usuário não encontrado");
         }
 
-        log.info("Resgatando enquete (ID: {})", dto.enqueteId());
+        log.debug("Resgatando enquete (ID: {})", dto.enqueteId());
         if (!enqueteRepository.existsById(dto.enqueteId())) {
             log.warn("Falha na votação: enquete não encontrada (ID: {})", dto.enqueteId());
             throw new NotFoundException("Enquete não encontrada");
         }
 
-        log.info("Resgatando opção de voto (ID: {})", dto.opcaoVotoId());
+        log.debug("Resgatando opção de voto (ID: {})", dto.opcaoVotoId());
         if (!opcaoVotoRepository.existsById(dto.opcaoVotoId())) {
             log.warn("Falha na votação: opção de voto não encontrado (ID: {})", dto.opcaoVotoId());
             throw new NotFoundException("Opção de voto não encontrado");

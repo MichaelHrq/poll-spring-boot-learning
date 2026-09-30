@@ -18,12 +18,6 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void cadastrar(@RequestBody UsuarioRequestDto dto) {
-        usuarioService.register(dto);
-    }
-
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable String id) {
@@ -34,12 +28,6 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.OK)
     public void updateUsername(@PathVariable String id, @RequestBody UsuarioRequestDto dto) {
         usuarioService.updateUsername(id, dto);
-    }
-
-    @PutMapping("/password")
-    @ResponseStatus(HttpStatus.OK)
-    public void updatePassword(@RequestBody UsuarioRequestDto dto) {
-        usuarioService.updatePassword(dto);
     }
 
     @GetMapping

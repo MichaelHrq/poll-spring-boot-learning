@@ -17,33 +17,6 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public void register(UsuarioRequestDto dto) {
-        log.info("Iniciando tentativa de registro para o username: {}", dto.username());
-        Usuarios usuario = usuarioRepository.findByUsername(dto.username()).orElse(null);
-        if (usuario != null) {
-            log.warn("Falha no registro: username {} já cadastrado", dto.username());
-            throw new BadRequestException("Username já cadastrado!");
-        }
-        usuarioRepository.save(Usuarios.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
-                .build());
-        log.info("Username {} registrado e salvo com sucesso", dto.username());
-    }
-
-    public void updatePassword(UsuarioRequestDto dto) {
-        log.info("Iniciando tentativa de atualizar senha do username: {}", dto.username());
-        Usuarios usuario = usuarioRepository.findByUsername(dto.username())
-                .orElseThrow(() -> {
-                    log.warn("Falha na atualização: Username {} não encontrado", dto.username());
-                    return new NotFoundException("Usuário não encontrado");
-                });
-        usuario.setPassword(passwordEncoder.encode(dto.password()));
-        usuarioRepository.save(usuario);
-        log.info("Senha do username {} atualizada com sucesso", dto.username());
-    }
 
     public void delete(String id) {
         log.info("Iniciando tentativa de remover usuário do ID: {}", id);

@@ -5,7 +5,9 @@ spring:
     uri: ${MONGO_URI}
 
 jwt:
-  expiration: {JWT_EXPIRATION}
+  expiration:
+    access: ${JWT_ACCESS_EXPIRATION:900000}
+    refresh: ${JWT_REFRESH_EXPIRATION:604800000}
   key: {JWT_KEY}
 
 logging:
