@@ -4,10 +4,8 @@ import com.michael.learning.documents.Usuarios;
 import com.michael.learning.dto.request.UsuarioRequestDto;
 import com.michael.learning.exception.NotFoundException;
 import com.michael.learning.repositories.UsuarioRepository;
-import com.michael.learning.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

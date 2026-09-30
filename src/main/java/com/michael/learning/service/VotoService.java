@@ -15,7 +15,6 @@ import com.michael.learning.repositories.UsuarioRepository;
 import com.michael.learning.repositories.VotosRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.framework.AopConfigException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
